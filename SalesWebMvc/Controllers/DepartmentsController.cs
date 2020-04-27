@@ -10,11 +10,11 @@ using SalesWebMvc.Models;
 
 namespace SalesWebMvc.Controllers
 {
-    public class DepartamentsController : Controller
+    public class DepartmentsController : Controller
     {
         private readonly SalesWebMvcContext _context;
 
-        public DepartamentsController(SalesWebMvcContext context)
+        public DepartmentsController(SalesWebMvcContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace SalesWebMvc.Controllers
         // GET: Departaments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departament.ToListAsync());
+            return View(await _context.Department.ToListAsync());
         }
 
         // GET: Departaments/Details/5
@@ -33,14 +33,14 @@ namespace SalesWebMvc.Controllers
                 return NotFound();
             }
 
-            var departament = await _context.Departament
+            var department = await _context.Department
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (departament == null)
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(departament);
+            return View(department);
         }
 
         // GET: Departaments/Create
@@ -54,15 +54,15 @@ namespace SalesWebMvc.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Department departament)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(departament);
+                _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(departament);
+            return View(department);
         }
 
         // GET: Departaments/Edit/5
@@ -73,12 +73,12 @@ namespace SalesWebMvc.Controllers
                 return NotFound();
             }
 
-            var departament = await _context.Departament.FindAsync(id);
-            if (departament == null)
+            var department = await _context.Department.FindAsync(id);
+            if (department == null)
             {
                 return NotFound();
             }
-            return View(departament);
+            return View(department);
         }
 
         // POST: Departaments/Edit/5
@@ -86,9 +86,9 @@ namespace SalesWebMvc.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department departament)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
         {
-            if (id != departament.Id)
+            if (id != department.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace SalesWebMvc.Controllers
             {
                 try
                 {
-                    _context.Update(departament);
+                    _context.Update(department);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartamentExists(departament.Id))
+                    if (!DepartamentExists(department.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +113,7 @@ namespace SalesWebMvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(departament);
+            return View(department);
         }
 
         // GET: Departaments/Delete/5
@@ -124,7 +124,7 @@ namespace SalesWebMvc.Controllers
                 return NotFound();
             }
 
-            var departament = await _context.Departament
+            var departament = await _context.Department
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (departament == null)
             {
@@ -139,15 +139,15 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var departament = await _context.Departament.FindAsync(id);
-            _context.Departament.Remove(departament);
+            var departament = await _context.Department.FindAsync(id);
+            _context.Department.Remove(departament);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DepartamentExists(int id)
         {
-            return _context.Departament.Any(e => e.Id == id);
+            return _context.Department.Any(e => e.Id == id);
         }
     }
 }

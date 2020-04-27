@@ -5,10 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200426055708_Initial.cs" />
+    <Compile Remove="Migrations\20200426055708_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200427034657_OtherEntities.cs" />
+    <Compile Remove="Migrations\20200427034657_OtherEntities.Designer.cs" />
+    <Compile Remove="Migrations\20200427201252_Rebuild_Department.cs" />
+    <Compile Remove="Migrations\20200427201252_Rebuild_Department.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
