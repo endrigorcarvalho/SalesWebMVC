@@ -16,6 +16,11 @@ namespace SalesWebMvc.Services
             this._context = context;
         }
 
+        public void Create(Seller seller)
+        {
+            _context.Add(seller);
+            _context.SaveChanges();
+        }
         public List<Seller> FindAll()
         {
 

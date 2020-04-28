@@ -22,5 +22,19 @@ namespace SalesWebMvc.Controllers
             
             return View(_sellerService.FindAll());
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost] 
+        [ValidateAntiForgeryToken]  // Para hacker não conseguir enviar códigos maliciosos
+        public IActionResult Create(Seller seller)
+        {
+            _sellerService.Create(seller);
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
