@@ -9,19 +9,28 @@ namespace SalesWebMvc.Models
     public class Seller
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "{0} required")]   // {0} - Nome do campo
+        [StringLength(60,MinimumLength =3, ErrorMessage ="{0} should be between {2} and {1}")]  // {1} - 1º campo(tamanho máximo), {2} - 2º campo(tam mínimo)
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "{0} required")]   // {0} - Nome do campo
+        [EmailAddress(ErrorMessage = "Enter a valid email")] 
         [DataType(DataType.EmailAddress)]   // Tag Helper - E-mail
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "{0} required")]   // {0} - Nome do campo
         [Display(Name = "Birth Date")]  // Tag Helper - Altera o nome do campo
         [DataType(DataType.Date)]       // Tag Helper - Deixar datetime apenas com data
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime BirthDate { get; set; }
-        
+
+        [Required(ErrorMessage = "{0} required")]   // {0} - Nome do campo
         [Display(Name = "Base Salary")]
         [DisplayFormat(DataFormatString = "{0:F2}")]    // Tag Helper - Formatando em 2 casas decimais
+        [Range(100.00, 900.00, ErrorMessage = "{0} must be from {1} to {2}")]
         public double BaseSalary { get; set; }
+
         public Department Department { get; set; }
         public int DepartmentId { get; set; } // Forçar que Department seja chave estrangeira
 
