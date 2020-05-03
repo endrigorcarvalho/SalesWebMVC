@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using SalesWebMvc.Services.Exceptions;
 
 namespace SalesWebMvc.Controllers
 {
@@ -45,13 +48,13 @@ namespace SalesWebMvc.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { errorMessage = "Id not Providade" });
             }
 
             var seller = _sellerService.FindById(id.Value);
             if (seller ==  null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { errorMessage = "Id not Found" });
             }
 
             return View(seller);
@@ -69,16 +72,73 @@ namespace SalesWebMvc.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { errorMessage = "Id not Providade"});
             }
 
             var seller = _sellerService.FindById(id.Value);
             if (seller == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { errorMessage = "Id not found" });
             }
 
             return View(seller);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction(nameof(Error), new { errorMessage = "Id not Providade" });
+            }
+
+            var seller = _sellerService.FindById(id.Value);
+            if (seller == null)
+            {
+                return RedirectToAction(nameof(Error), new { errorMessage = "Id not Found" });
+            }
+
+            List<Department> departments = _departmentService.FindAll();
+
+            SellerFormViewModel viewModel = new SellerFormViewModel() { Departments = departments, Seller = seller };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Seller seller, int id)
+        {
+            if(id != seller.Id)
+            {
+                return RedirectToAction(nameof(Error), new { errorMessage = "Id Mismatch" });
+            }
+            
+            try
+            {
+                _sellerService.Update(seller);
+                return RedirectToAction(nameof(Index));
+            }
+            catch(NotFoundException e)
+            {
+                return RedirectToAction(nameof(Error), new { errorMessage = e.Message });
+            }
+            catch(DbCurrencyException e )
+            {
+                return RedirectToAction(nameof(Error), new { errorMessage = e.Message });
+            }
+
+
+        }
+
+        public IActionResult Error(string errorMessage)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = errorMessage,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+
+            return View(viewModel);
         }
     }
 }
