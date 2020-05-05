@@ -46,7 +46,7 @@ namespace SalesWebMvc.Services
                 _context.Seller.Remove(obj);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateException e)
+            catch(DbUpdateException)
             {
                 throw new IntegrityException("Is impossible delete a seller with sales.");
             }
